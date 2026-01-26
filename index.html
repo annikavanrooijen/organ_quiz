@@ -3,101 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Organ Quiz </title>
-  <style>
+  <title>Organ Quiz</title>
 
-    html, body { 
-      margin:0; 
-      height:100%; 
-      overflow:hidden; 
-      font-family:system-ui, sans-serif; }
-    
-    #overlay {
-      position: fixed; inset: 12px auto auto 12px;
-      background: rgba(0,0,0,0.65); color: #fff;
-      padding: 12px 14px; border-radius: 12px;
-      max-width: 360px;
-    }
-
-    #hud { 
-      display:flex; 
-      gap:12px; flex-wrap:wrap; 
-      margin-top:8px; opacity:0.9; 
-      font-size:14px; 
-    }
-
-    #feedback { 
-      margin-top:8px; 
-      font-weight:600; 
-    }
-
-    button { 
-      cursor:pointer; 
-      border:0; 
-      border-radius:10px; 
-      padding:8px 10px; 
-    }
-
-    #welcome{
-      position:fixed; inset:0;
-      display:flex; 
-      align-items:center; 
-      justify-content:center;
-      background-image: linear-gradient( rgba(0,0,0,0.55),rgba(0,0,0,0.75)), url("./assets/images/welcome_page.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-    }
-    
-    #welcome .card{
-      background: rgb(26, 101, 161);
-      padding: 22px 24px;
-      border-radius: 16px;
-      width:min(520px, 92vw);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-    }
-
-    #welcome h1{ 
-      margin:0 0 8px; 
-      font-size:28px; 
-    }
-
-    #welcome p{ 
-      margin:0 0 14px; 
-      opacity:0.; 
-    }
-
-    #startBtn{
-    font-size: 16px;
-    padding: 10px 14px;
-    }
-  </style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
 
   <!-- Welcome Screen -->
   <div id="welcome">
     <div class="card">
-      <h1>Organ</h1>
+      <h1>Organ Quiz</h1>
       <p>Klicke auf „Spiel starten“, um zu beginnen.</p>
       <button id="startBtn">Spiel starten</button>
     </div>
   </div>
 
-  <!-- Game UI (dein bisheriges Overlay) -->
+  <!-- Game UI -->
   <div id="gameUI" style="display:none;">
     <div id="overlay">
       <div><b id="question">Lade…</b></div>
+
       <div id="hud">
         <div>Punkte: <span id="score">0</span></div>
         <div>Frage: <span id="qindex">-</span></div>
         <button id="skipBtn">Überspringen</button>
       </div>
+
       <div id="feedback"></div>
     </div>
   </div>
 
+  <!-- Three.js Import Map -->
   <script type="importmap">
   {
     "imports": {
@@ -107,6 +45,8 @@
   }
   </script>
 
+  <!-- Main Script -->
   <script type="module" src="./src/main.js"></script>
 
 </body>
+</html>

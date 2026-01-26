@@ -1,0 +1,100 @@
+/* ---------- Global ---------- */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: inherit;
+}
+
+/* ---------- Welcome Screen ---------- */
+#welcome {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-image:
+    linear-gradient(
+      rgba(0,0,0,0.55),
+      rgba(0,0,0,0.75)
+    ),
+    url("./assets/images/welcome_page.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+}
+
+#welcome .card {
+  background: rgba(44, 0, 240, 0.55);
+  backdrop-filter: blur(10px);
+
+  padding: 22px 24px;
+  border-radius: 16px;
+
+  width: min(520px, 92vw);
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+#welcome h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+#welcome p {
+  margin: 0 0 14px;
+  opacity: 0.9;
+}
+
+#startBtn {
+  font-size: 16px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+#startBtn:hover {
+  filter: brightness(1.1);
+}
+
+/* ---------- Game Overlay ---------- */
+#overlay {
+  position: fixed;
+  inset: 12px auto auto 12px;
+
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+  max-width: 360px;
+}
+
+#hud {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+#feedback {
+  margin-top: 8px;
+  font-weight: 600;
+}
