@@ -12,15 +12,8 @@ export class AnatomyScene {
 
   build() {
     const loader = new GLTFLoader();
-  
-    // Körper bleibt gleich
-    const bodyGeom = new THREE.CapsuleGeometry(0.8, 1.6, 6, 12);
-    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1f2a44 });
-    const body = new THREE.Mesh(bodyGeom, bodyMat);
-    body.position.set(0, 1.2, 0);
-    this.scene.add(body);
-  
-    // === HERZ (glTF) ===
+
+    // Herz laden
     loader.load(
       "assets/models/heart/scene.gltf",
       (gltf) => {
@@ -28,9 +21,8 @@ export class AnatomyScene {
         const heart = gltf.scene;
   
         // Skalierung & Position
-        heart.scale.set(0.02, 0.02, 0.02);
-        heart.position.set(0, 1.2, 0.6); // etwas nach vorne (z)  
-        // WICHTIG: organId setzen (Quiz!)
+        heart.scale.set(30, 30, 30); // skaliert auf passende Größe
+        heart.position.set(0, 0.5,0);
         heart.traverse((child) => {
           if (child.isMesh) {
             child.userData.organId = "heart";
@@ -46,21 +38,7 @@ export class AnatomyScene {
       undefined,
       (err) => console.error("Heart load error", err)
     );
-  
-    // // === ANDERE ORGANE (Platzhalter) ===
-    // this.createPlaceholder("lungs", [-0.9, 1.3, 0], 0x6ee7ff);
-    // this.createPlaceholder("liver", [0.9, 1.0, 0], 0xffc857);
   }
-  
-  // createPlaceholder(id, position, color) {
-  //   const geom = new THREE.SphereGeometry(0.28, 24, 24);
-  //   const mat = new THREE.MeshStandardMaterial({ color });
-  //   const mesh = new THREE.Mesh(geom, mat);
-  //   mesh.position.set(...position);
-  //   mesh.userData.organId = id;
-  //   this.scene.add(mesh);
-  //   this.organs.push(mesh);
-  //}  
 
   update(dt) {
     this.t += dt;
