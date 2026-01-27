@@ -1,49 +1,60 @@
-import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-import { ORGANS } from "./organs.js";
-import { GLTFLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
+// src/anatomy/AnatomyScene.js
 
+// Managt das Laden und Anzeigen von Organ-3D-Modellen in der Anatomie-Szene
+
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { ORGAN_CONFIG } from "../quiz/organs_catalog.js";
 
 export class AnatomyScene {
   constructor(scene) {
     this.scene = scene;
-    this.organs = [];
-    this.t = 0;
+    this.objectLoader = new GLTFLoader();
+    this.currentOrgan = null; 
   }
 
-  build() {
-    const loader = new GLTFLoader();
+  async loadOrgan(organId) {
+    const organConfig = ORGAN_CONFIG[organId];
+    if (!organConfig) {
+      console.warn("Unknown organId:", organId);
+      return;
+    }
 
-    // Herz laden
-    loader.load(
-      "assets/models/heart/scene.gltf",
+    // altes Organ entfernen
+    if (this.currentOrgan) {
+      this.scene.remove(this.currentOrgan);
+      // Speicher freigeben für Geometrien und Materialien
+      this.currentOrgan.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.geometry?.dispose?.();
+          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose?.());
+          else obj.material?.dispose?.();
+        }
+      });
+      this.currentOrgan = null;
+    }
+
+    // neues Organ laden
+    this.objectLoader.load(
+      organConfig.url,
       (gltf) => {
-        console.log("Heart loaded", gltf);
-        const heart = gltf.scene;
-  
-        // Skalierung & Position
-        heart.scale.set(30, 30, 30); // skaliert auf passende Größe
-        heart.position.set(0, 0.5,0);
-        heart.traverse((child) => {
+        const organ = gltf.scene;
+
+        organ.scale.set(...organ.scale);
+        organ.position.set(...organ.position);
+
+        organ.traverse((child) => {
           if (child.isMesh) {
-            child.userData.organId = "heart";
+            child.userData.organId = organId;
             child.castShadow = true;
             child.receiveShadow = true;
           }
         });
-  
-        this.scene.add(heart);
-        this.organs.push(heart);
-        console.log("Organs in scene:", this.organs);
+
+        this.scene.add(organ);
+        this.currentOrgan = organ;
       },
       undefined,
-      (err) => console.error("Heart load error", err)
+      (err) => console.error("Organ load error", organId, err)
     );
-  }
-
-  update(dt) {
-    this.t += dt;
-    for (let i = 0; i < this.organs.length; i++) {
-      this.organs[i].rotation.y += 0.5 * dt;
-    }
   }
 }

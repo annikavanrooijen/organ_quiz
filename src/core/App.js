@@ -42,7 +42,6 @@ export class App {
     this.quiz.start();
 
     this.rendererManager.setAnimationLoop((dt) => {
-      this.anatomy.update(dt);
       this.rendererManager.render(this.sceneManager.scene, this.cameraManager.camera);
     });
   }
