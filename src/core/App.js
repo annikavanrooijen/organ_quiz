@@ -3,6 +3,8 @@ import { CameraManager } from "./CameraManager.js";
 import { RendererManager } from "./RendererManager.js";
 import { InputManager } from "./InputManager.js";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import { AnatomyScene } from "../anatomy/AnatomyScene.js";
 import { QuizManager } from "../quiz/QuizManager.js";
 import { questions } from "../quiz/questions.js";
@@ -31,7 +33,24 @@ export class App {
     this.onResize();
     window.addEventListener("resize", () => this.onResize());
 
+    // Controls
+    this.controls = new OrbitControls(
+      this.cameraManager.camera,
+      this.rendererManager.getDomElement()
+    );
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.08;
+    this.controls.enableZoom = true;
+    this.controls.enableRotate = true;
+    this.controls.enablePan = false;
+    this.controls.minDistance = 1.5;
+    this.controls.maxDistance = 12;
+
     this.anatomy.build();
+
+    this.quiz.onQuestion = (q) => {
+      this.anatomy.loadOrgan(q.correctId);
+    };
 
     this.input.onPick = (hit) => {
       const organId = hit.object.userData?.organId;
@@ -42,6 +61,7 @@ export class App {
     this.quiz.start();
 
     this.rendererManager.setAnimationLoop((dt) => {
+      this.controls?.update();
       this.rendererManager.render(this.sceneManager.scene, this.cameraManager.camera);
     });
   }

@@ -3,13 +3,19 @@
 // Managt das Laden und Anzeigen von Organ-3D-Modellen in der Anatomie-Szene
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { ORGAN_CONFIG } from "../quiz/organs_catalog.js";
+import { ORGAN_CONFIG } from "./organ_config.js";
 
 export class AnatomyScene {
   constructor(scene) {
     this.scene = scene;
     this.objectLoader = new GLTFLoader();
-    this.currentOrgan = null; 
+    this.currentOrgan = null;
+    this._requestId = 0; // <— neu
+  }
+
+  build() {
+    // optional: hier NICHT automatisch Herz laden
+    // (sonst bleibt es immer als erstes sichtbar)
   }
 
   async loadOrgan(organId) {
@@ -19,28 +25,31 @@ export class AnatomyScene {
       return;
     }
 
+    const reqId = ++this._requestId; // <— neu
+
     // altes Organ entfernen
     if (this.currentOrgan) {
       this.scene.remove(this.currentOrgan);
-      // Speicher freigeben für Geometrien und Materialien
       this.currentOrgan.traverse((obj) => {
         if (obj.isMesh) {
           obj.geometry?.dispose?.();
-          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose?.());
+          if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
           else obj.material?.dispose?.();
         }
       });
       this.currentOrgan = null;
     }
 
-    // neues Organ laden
     this.objectLoader.load(
       organConfig.url,
       (gltf) => {
+        // Wenn inzwischen ein neueres loadOrgan() aufgerufen wurde: abbrechen
+        if (reqId !== this._requestId) return;
+
         const organ = gltf.scene;
 
-        organ.scale.set(...organ.scale);
-        organ.position.set(...organ.position);
+        organ.scale.set(...organConfig.scale);
+        organ.position.set(...organConfig.position);
 
         organ.traverse((child) => {
           if (child.isMesh) {

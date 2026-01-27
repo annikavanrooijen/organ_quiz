@@ -5,6 +5,8 @@ export class QuizManager {
     this.score = 0;
     this.index = 0;
     this.active = null;
+
+    this.onQuestion = null; // <— neu
   }
 
   start() {
@@ -21,6 +23,8 @@ export class QuizManager {
     this.active = this.questions[this.index];
     this.ui.setQuestion(this.active.prompt);
     this.ui.setHud(this.score, this.index + 1, this.questions.length);
+
+    this.onQuestion?.(this.active); // <— neu
   }
 
   answer(organId) {
