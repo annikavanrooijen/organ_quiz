@@ -29,7 +29,7 @@ App.js - Starten der App
 CameraManager.js - Kamera bewegen/zoomen
 InputManager.js - Managed Spielerinnen Input 
 RendererManager.js - Three.js Renderer
-SceneManager.js - Szenenverwaltun
+SceneManager.js - Szenenverwaltung
 quiz
 OrgansCatalog.js - Liste der Organe
 Questions.js - Fragenpool
@@ -54,9 +54,16 @@ Quiz-Logik:
 [] 1 Punkt pro Frage
 [] Überspringen möglich
 
+Anatomie-Scene:
+[] Zurück Button
+
 Herz:
 Frage 1: 
 [] Annotation auf Aortenbogen
 
 Bugs:
 [] Counter zählt weiter obwohl alle Fragen beantwortet wurden
+
+Schluss-Page
+[] Nochmal Spielen Button
+[] Punktestand 

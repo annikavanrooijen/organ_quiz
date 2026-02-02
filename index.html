@@ -21,11 +21,10 @@
   </div>
 
 
-  <!-- HIER: Three.js Mount Point -->
+  <!-- Three.js Mount Point -->
   <div id="app"></div>
 
   <!-- Game UI -->
-  
   <div id="gameUI" style="display:none;">
     <div id="overlay">
       <div><b id="question">Lade…</b></div>
@@ -39,6 +38,17 @@
       <div id="feedback"></div>
     </div>
   </div>
+
+    <!-- End Screen -->
+  <div id="endScreen" style="display:none;">
+    <div class="card">
+      <h1>Quiz beendet 🎉</h1>
+      <p>Deine Punktzahl:</p>
+      <h2 id="finalScore">0</h2>
+      <button id="restartBtn">Nochmal spielen</button>
+    </div>
+  </div>
+  
 
   <!-- Three.js Import Map -->
   <script type="importmap">

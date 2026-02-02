@@ -5,35 +5,45 @@ export class QuizManager {
     this.score = 0;
     this.index = 0;
     this.active = null;
-
-    this.onQuestion = null; // <— neu
+    this.onQuestion = null;
+    this.finished = false;
   }
 
   start() {
     this.score = 0;
     this.index = 0;
-    this.next();
+    this.finished = false;
+    this.loadCurrent();
   }
 
-  next() {
+  loadCurrent() {
     if (this.index >= this.questions.length) {
-      this.ui.setQuestion(`Fertig! Endstand: ${this.score}/${this.questions.length}`);
+      this.finished = true;
+      this.ui.showEndScreen(this.score);
       return;
     }
+
     this.active = this.questions[this.index];
     this.ui.setQuestion(this.active.prompt);
     this.ui.setHud(this.score, this.index + 1, this.questions.length);
+    this.onQuestion?.(this.active);
+  }
 
-    this.onQuestion?.(this.active); // <— neu
+  next() {
+    if (this.finished) return;
+    this.index++;
+    this.loadCurrent();
   }
 
   answer(organId) {
-    if (!this.active) return;
+    if (this.finished || !this.active) return;
+
+    // Punkte geben, wenn richtig
     if (organId === this.active.correctId) {
       this.score++;
-      this.index++;
-      this.next();
     }
-    this.ui.setHud(this.score, this.index + 1, this.questions.length);
+
+    // WICHTIG: immer zur nächsten Frage
+    this.next();
   }
 }

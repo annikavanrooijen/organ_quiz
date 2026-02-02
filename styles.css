@@ -98,3 +98,30 @@ button {
   margin-top: 8px;
   font-weight: 600;
 }
+
+/* Endscreen als dunkler Overlay-Screen */
+#endScreen {
+  position: fixed;
+  inset: 0;
+  display: none;                 /* per JS -> flex */
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  background: rgba(255, 251, 251, 0.75);  /* dunkler, Organ kaum sichtbar */
+  backdrop-filter: blur(2px);    /* optional, leichtes Blur */
+}
+
+/* Endscreen Card: gleicher Look wie Welcome Card */
+#endScreen .card {
+  background: rgba(32, 0, 173, 0.55);
+  backdrop-filter: blur(10px);
+
+
+  padding: 22px 24px;
+  border-radius: 16px;
+
+  width: min(520px, 92vw);
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+}

@@ -3,20 +3,17 @@
 // Managt das Laden und Anzeigen von Organ-3D-Modellen in der Anatomie-Szene
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { ORGAN_CONFIG } from "./organ_config.js";
+import { ORGAN_CONFIG } from "./OrganConfig.js";
 
 export class AnatomyScene {
   constructor(scene) {
     this.scene = scene;
     this.objectLoader = new GLTFLoader();
     this.currentOrgan = null;
-    this._requestId = 0; // <— neu
+    this._requestId = 0;
   }
 
-  build() {
-    // optional: hier NICHT automatisch Herz laden
-    // (sonst bleibt es immer als erstes sichtbar)
-  }
+  build() {}
 
   async loadOrgan(organId) {
     const organConfig = ORGAN_CONFIG[organId];
@@ -25,7 +22,7 @@ export class AnatomyScene {
       return;
     }
 
-    const reqId = ++this._requestId; // <— neu
+    const reqId = ++this._requestId; 
 
     // altes Organ entfernen
     if (this.currentOrgan) {

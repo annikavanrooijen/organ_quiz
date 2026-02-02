@@ -2,12 +2,10 @@ import { SceneManager } from "./SceneManager.js";
 import { CameraManager } from "./CameraManager.js";
 import { RendererManager } from "./RendererManager.js";
 import { InputManager } from "./InputManager.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
 import { AnatomyScene } from "../anatomy/AnatomyScene.js";
 import { QuizManager } from "../quiz/QuizManager.js";
-import { questions } from "../quiz/questions.js";
+import { questions } from "../quiz/Questions.js";
 import { UI } from "../ui/UI.js";
 
 export class App {
@@ -60,6 +58,7 @@ export class App {
     this.ui.onSkip = () => this.quiz.next();
     this.quiz.start();
 
+    this.ui.onRestart = () => { location.reload(); };
     this.rendererManager.setAnimationLoop((dt) => {
       this.controls?.update();
       this.rendererManager.render(this.sceneManager.scene, this.cameraManager.camera);
