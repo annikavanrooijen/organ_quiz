@@ -1,5 +1,3 @@
-// src/anatomy/AnatomyScene.js
-
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ORGAN_CONFIG } from "./OrganConfig.js";
 import * as THREE from "three";

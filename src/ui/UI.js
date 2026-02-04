@@ -1,3 +1,5 @@
+// Verwaltet die Benutzeroberfläche des Quizspiels
+
 export class UI {
   constructor() {
     this.questionEl = document.getElementById("question");

@@ -1,5 +1,3 @@
-// src/anatomy/organs_config.js
-
 // Katalog der verfügbaren Organe mit ihren 3D-Modell-URLs und Transformationsdaten
 
 export const ORGAN_CONFIG = {

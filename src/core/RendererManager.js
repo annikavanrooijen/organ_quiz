@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+// Verwaltet den WebGL-Renderer: Initialisierung, Größenanpassung, Rendern und Animationsschleife
+
 export class RendererManager {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });

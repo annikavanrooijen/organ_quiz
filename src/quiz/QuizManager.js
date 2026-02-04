@@ -1,3 +1,5 @@
+// Verwaltet den Quiz-Ablauf: Starten, Beantworten von Fragen, Fortschritt und Punktestand
+
 export class QuizManager {
   constructor(questions, ui) {
     this.questions = questions;

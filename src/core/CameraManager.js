@@ -1,6 +1,5 @@
 import * as THREE from "three";
 
-
 // Verwaltet die Perspektivkamer mit einem Blick von vorne auf die Szene, leicht erhöht
 export class CameraManager {
   constructor() {
