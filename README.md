@@ -122,6 +122,9 @@ licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 
 ## Externe Quellen & Inspiration
 
+**KI-Unterstützung:**  
+ChatGPT (OpenAI) wurde im Rahmen des Projekts als unterstützendes Hilfsmittel zur technischen Recherche, zur Überprüfung von Lösungsansätzen sowie zur sprachlichen Präzisierung der Dokumentation eingesetzt.
+
 ### YouTube Tutorials
 - **Three.js Raycasting Tutorial for Beginners – Mouse Picking & Selection**  
   https://www.youtube.com/watch?v=QATefHrO4kg
@@ -156,3 +159,4 @@ licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 
 - **Using raycaster to select specific elements of glTF – Auswahl von Komponenten**  
   https://stackoverflow.com/questions/56317214/using-raycaster-to-select-specific-elements-of-gltf-add-event-listeners
+
