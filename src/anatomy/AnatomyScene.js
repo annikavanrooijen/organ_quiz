@@ -145,11 +145,7 @@ export class AnatomyScene {
   // erstellt ein unsichtbares Ziel-Mesh basierend auf den Konfigurationsdaten
   _makeTargetMesh(t, organId, targetId) {
     const sphere = new THREE.SphereGeometry(t.radius, 16, 16);
-    const material = new THREE.MeshBasicMaterial({
-      transparent: true,
-      opacity: 0.0,
-    });
-
+    const material = new THREE.MeshBasicMaterial({transparent: true, opacity: 0.0,});
     const mesh = new THREE.Mesh(sphere, material);
     mesh.position.set(...t.position);
     mesh.scale.set(...(t.scale ?? [1, 1, 1]));

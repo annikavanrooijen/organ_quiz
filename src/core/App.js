@@ -85,13 +85,9 @@ export class App {
     const data = hit && hit.object && hit.object.userData;
     if (!data || !data.targetId) return;
 
-    self.quiz.answer({ organId: data.organId, targetId: data.targetId });
-
-    // optional: beim Klicken ausblenden
-    // self.ui.hideInfo();
+    self.quiz.answer({organId: data.organId, targetId: data.targetId });
   };
 }
-
 
   // verknüpft die UI-Elemente mit dem Quiz-Manager
   _wireUI() {
