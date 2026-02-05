@@ -17,13 +17,15 @@ export class QuizManager {
   }
 
   next() {
-    if (this._isFinished()) return;
+    if (this._isFinished()) 
+      return;
     this.index++;
     this._loadCurrent();
   }
 
   answer(pick) {
-    if (this._isFinished() || !this.active) return;
+    if (this._isFinished() || !this.active) 
+      return;
 
     if (this._isCorrectPick(pick, this.active)) {
       this._incrementScore();

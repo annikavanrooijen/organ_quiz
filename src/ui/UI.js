@@ -10,6 +10,9 @@ export class UI {
     this.finalScoreEl = document.getElementById("finalScore");
     this.onSkip = null;
     this.onRestart = null;
+    this.infoBox = document.getElementById("infoBox");
+    this.infoTitle = document.getElementById("infoTitle");
+    this.infoText = document.getElementById("infoText");
 
     document.getElementById("skipBtn")
       .addEventListener("click", () => this.onSkip?.());
@@ -29,6 +32,16 @@ export class UI {
     this.qindexEl.textContent = `${qIndex}/${qTotal}`;
   }
 
+  showInfo(title, text) {
+    this.infoTitle.textContent = title;
+    this.infoText.textContent = text;
+    this.infoBox.style.display = "block";
+  }
+
+  hideInfo() {
+    this.infoBox.style.display = "none";
+  }
+
   // Zeigt den Endbildschirm mit der finalen Punktzahl an
   showEndScreen(score) {
     console.log("UI.showEndScreen called with score:", score);
@@ -39,9 +52,11 @@ export class UI {
       return;
     }
 
-    if (this.gameUIEl) this.gameUIEl.style.display = "none";
+    if (this.gameUIEl) 
+      this.gameUIEl.style.display = "none";
     this.endScreenEl.style.display = "flex";
 
-    if (this.finalScoreEl) this.finalScoreEl.textContent = score;
+    if (this.finalScoreEl) 
+      this.finalScoreEl.textContent = score;
   }
 }

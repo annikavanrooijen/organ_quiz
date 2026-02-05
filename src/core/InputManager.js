@@ -19,7 +19,8 @@ export class InputManager {
     this._updateNDCFromEvent(e);
     this._raycastFromNDC();
     const hit = this._getFirstTargetHit();
-    if (hit && this.onPick) this.onPick(hit);
+    if (hit && this.onPick) 
+      this.onPick(hit);
   }
 
   /* -------------------- interne Hilfsfunktionen -------------------- */
@@ -27,10 +28,8 @@ export class InputManager {
   // Aktualisiert NDC-Koordinaten basierend auf Pointer-Event
   _updateNDCFromEvent(e) {
     const rect = this.domEl.getBoundingClientRect();
-
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-
     this.ndc.set(x, y);
   }
 
@@ -42,7 +41,9 @@ export class InputManager {
 
   // Liefert den ersten Treffer, der ein Target ist (userData.targetId)
   _getFirstTargetHit() {
-    const targetHits = this._hits.filter((h) => h.object.userData?.targetId);
+    const targetHits = this._hits.filter(function (h) {
+      return h && h.object && h.object.userData && h.object.userData.targetId;});
+
     return targetHits.length ? targetHits[0] : null;
   }
 }

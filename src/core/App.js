@@ -11,21 +11,18 @@ import { UI } from "../ui/UI.js";
 export class App {
   constructor(mountEl) {
     this.mountEl = mountEl;
-
     this.sceneManager = new SceneManager();
     this.cameraManager = new CameraManager();
     this.rendererManager = new RendererManager();
     this.ui = new UI();
     this.anatomy = new AnatomyScene(this.sceneManager.scene);
     this.quiz = new QuizManager(questions, this.ui);
-    this.input = new InputManager(
-      this.rendererManager.getDomElement(),
-      this.cameraManager.camera,
-      this.sceneManager.scene
-    );
+    this.input = new InputManager(this.rendererManager.getDomElement(), this.cameraManager.camera, this.sceneManager.scene);
+    this._onResize = this.onResize.bind(this);
   }
 
   /* -------------------- Start -------------------- */
+
   start() {
     this._initRenderer();
     this._initResizeHandling();
@@ -37,27 +34,20 @@ export class App {
     this._startGameLoop();
   }
 
-  /* -------------------- Initialisierungsfunktionen -------------------- */
+  /* -------------------- Initialisierung -------------------- */
 
-  // Initialisiert den Renderer und hängt ihn ans Objekt an
   _initRenderer() {
     this.rendererManager.attachTo(this.mountEl);
     this.onResize();
   }
 
-  // Initialisiert das Resize-Handling
   _initResizeHandling() {
     window.addEventListener("resize", this._onResize);
   }
 
-  // Initialisiert die OrbitControls für die Kamera
   _initControls() {
-    const controls = new OrbitControls(
-      this.cameraManager.camera,
-      this.rendererManager.getDomElement()
-    );
+    const controls = new OrbitControls(this.cameraManager.camera,this.rendererManager.getDomElement());
     this.controls = controls;
-
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
     controls.enableZoom = true;
@@ -67,60 +57,68 @@ export class App {
     controls.maxDistance = 12;
   }
 
-  // Baut die Szene auf (Platzhalter für zukünftige Initialisierung)
   _buildScene() {
     this.anatomy.build();
   }
 
   /* -------------------- Spiel-Logik -------------------- */
 
-  // Verknüpft Quiz-Manager mit Anatomie-Szene
+  // verknüpft Quiz-Ereignisse mit dem Anatomie-Szene-Manager
   _wireQuizToAnatomy() {
-    this.quiz.onQuestion = async (q) => {
-      // Organ nur laden wenn Kategorie wechselt
-      if (this.anatomy.currentOrganId !== q.organId) {
-        await this.anatomy.loadOrgan(q.organId);
+    const self = this;
+
+    this.quiz.onQuestion = async function (q) {
+      if (self.anatomy.currentOrganId !== q.organId) {
+        await self.anatomy.loadOrgan(q.organId);
       }
-      // Target-Kugel immer neu setzen
-      this.anatomy.showTarget(q.organId, q.targetId);
+      self.anatomy.showTarget(q.organId, q.targetId);
+      self.ui.showInfo(q.title, q.info);
     };
   }
 
-  // Verknüpft Input-Manager mit Quiz-Manager
+
+  // verknüpft die Eingabe-Ereignisse mit dem Quiz-Manager
   _wirePickingToQuiz() {
-    this.input.onPick = (hit) => {
-      const { organId, targetId } = hit?.object?.userData || {};
-      if (!targetId) return;
-      this.quiz.answer({ organId, targetId });
-    };
-  }
+  const self = this;
 
-  // Verknüpft UI-Elemente mit Quiz-Manager
+  this.input.onPick = function (hit) {
+    const data = hit && hit.object && hit.object.userData;
+    if (!data || !data.targetId) return;
+
+    self.quiz.answer({ organId: data.organId, targetId: data.targetId });
+
+    // optional: beim Klicken ausblenden
+    // self.ui.hideInfo();
+  };
+}
+
+
+  // verknüpft die UI-Elemente mit dem Quiz-Manager
   _wireUI() {
-    this.ui.onSkip = () => this.quiz.next();
-    this.ui.onRestart = () => location.reload();
-
+    const self = this;
+    this.ui.onSkip = function () {self.quiz.next();};
+    this.ui.onRestart = function () {location.reload();};
     this.quiz.start();
   }
 
-  // Startet die Haupt-Game-Loop
+  /* -------------------- Game Loop -------------------- */
+
+  // startet die Quizschleife
   _startGameLoop() {
-    this.rendererManager.setAnimationLoop(() => {
-      this.controls?.update();
-      this.rendererManager.render(
-        this.sceneManager.scene,
-        this.cameraManager.camera
-      );
+    const self = this;
+
+    this.rendererManager.setAnimationLoop(function () {
+      if (self.controls) self.controls.update();
+      self.rendererManager.render(self.sceneManager.scene,self.cameraManager.camera);
     });
   }
 
   /* -------------------- Resize -------------------- */
 
-  // Resize-Handler
+  // behandelt Fenstergrößenänderungen
   onResize() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-
     this.cameraManager.setAspect(w / h);
     this.rendererManager.setSize(w, h);
   }

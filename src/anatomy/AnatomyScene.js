@@ -13,78 +13,86 @@ export class AnatomyScene {
     this._requestId = 0;
   }
 
-  // Platzhalter für zukünftige Initialisierung
+
   build() {}
 
-  // Entfernt die aktuell angezeigte Zielkugel
+  // entfernt die aktuelle Ziel aus der Szene
   clearTarget() {
     this._disposeMesh(this.currentTargetMesh);
     this.currentTargetMesh = null;
   }
 
-  // Zeigt die Zielkugel für das gegebene Organ und Target an
+  // lädt das zugeörige Ziel für das Organ und fügt es der Szene hinzu
   showTarget(organId, targetId) {
-    const cfg = this._getConfig(organId);
-    if (!cfg) return;
+    const config = this._getConfig(organId);
+    if (!config) 
+      return;
 
-    const t = this._getTarget(cfg, targetId);
-    if (!t) {
+    const target = this._getTarget(config, targetId);
+    if (!target) {
       console.warn("Unknown targetId:", targetId, "for organ:", organId);
       this.clearTarget();
       return;
     }
 
     this.clearTarget();
-    this.currentTargetMesh = this._makeTargetMesh(t, organId, targetId);
+    this.currentTargetMesh = this._makeTargetMesh(target, organId, targetId);
     this.scene.add(this.currentTargetMesh);
   }
 
-  // Lädt das 3D-Modell des angegebenen Organs
+  // lädt ein Organ basierend auf der organId und fügt es der Szene hinzu
   async loadOrgan(organId) {
-    const cfg = this._getConfig(organId);
-    if (!cfg) return;
+    const config = this._getConfig(organId);
+    if (!config) 
+      return;
 
-    if (this.currentOrganId === organId && this.currentOrgan) return;
+    if (this.currentOrganId === organId && this.currentOrgan) 
+      return;
 
     const reqId = ++this._requestId;
+    const self = this;
 
     this._removeCurrentOrgan();
 
     this.objectLoader.load(
-      cfg.url,
-      (gltf) => {
-        if (reqId !== this._requestId) return;
+      config.url,
+      function (gltf) {
+        if (reqId !== self._requestId) 
+          return;
 
         const organ = gltf.scene;
-        organ.scale.set(...cfg.scale);
-        organ.position.set(...cfg.position);
+        organ.scale.set(...config.scale);
+        organ.position.set(...config.position);
 
-        this.scene.add(organ);
-        this.currentOrgan = organ;
-        this.currentOrganId = organId;
+        self.scene.add(organ);
+        self.currentOrgan = organ;
+        self.currentOrganId = organId;
       },
       undefined,
-      (err) => console.error("Organ load error", organId, err)
+      function (err) {console.error("Organ load error", organId, err);}
     );
   }
 
-  /* -------------------- interne Hilfsfunktionen  -------------------- */
+  /* -------------------- interne Hilfsfunktionen -------------------- */
 
-  // Liefert die Konfiguration für ein Organ
+  // gibt die Konfiguration für ein Organ zurück
   _getConfig(organId) {
-    const cfg = ORGAN_CONFIG[organId];
-    if (!cfg) console.warn("Unknown organId:", organId);
-    return cfg;
+    const config = ORGAN_CONFIG[organId];
+    if (!config) console.warn("Unknown organId:", organId);
+    return config;
   }
 
-  // Liefert die Target-Definition für ein Organ und Target-ID
-  _getTarget(cfg, targetId) {
-    return cfg.targets?.find((x) => x.id === targetId) ?? null;
+  // gibt die Konfigurationen für ein Ziel zurück
+  _getTarget(config, targetId) {
+    return config.targets?.find(function (x) {
+      return x.id === targetId;
+    }) ?? null;
   }
 
-  // Entfernt das aktuell geladene Organ aus der Szene und gibt Ressourcen frei
+  // entfernt das aktuelle Organ aus der Szene und gibt den Speicher frei
   _removeCurrentOrgan() {
-    if (!this.currentOrgan) return;
+    if (!this.currentOrgan) 
+      return;
 
     this.scene.remove(this.currentOrgan);
     this._removeAndDispose(this.currentOrgan);
@@ -93,39 +101,56 @@ export class AnatomyScene {
     this.currentOrganId = null;
   }
 
-  // Hilfsfunktion zum Entfernen und Freigeben von Mesh-Ressourcen
+  // gibt den Speicher für ein Objekt und seine Kinder frei
   _removeAndDispose(root) {
-    if (!root) return;
+    if (!root) 
+      return;
 
-    root.traverse((obj) => {
-      if (!obj?.isMesh) return;
+    root.traverse(function (object) {
+      if (!object || !object.isMesh) 
+        return;
 
-      obj.geometry?.dispose?.();
+      if (object.geometry && object.geometry.dispose) {
+        object.geometry.dispose();
+      }
 
-      const mat = obj.material;
-      if (Array.isArray(mat)) mat.forEach((m) => m?.dispose?.());
-      else mat?.dispose?.();
+      const material = object.material;
+      if (Array.isArray(material)) {
+        material.forEach(function (m) {
+          if (m && m.dispose) 
+            m.dispose();
+        });
+      } else if (material && material.dispose) {
+        material.dispose();
+      }
     });
   }
 
-  // Hilfsfunktion zum Entfernen und Freigeben eines einzelnen Mesh
+  // gibt den Speicher für ein Mesh frei und entfernt es aus der Szene
   _disposeMesh(mesh) {
-    if (!mesh) return;
+    if (!mesh) 
+      return;
 
     this.scene.remove(mesh);
-    mesh.geometry?.dispose?.();
-    mesh.material?.dispose?.();
+
+    if (mesh.geometry && mesh.geometry.dispose) {
+      mesh.geometry.dispose();
+    }
+
+    if (mesh.material && mesh.material.dispose) {
+      mesh.material.dispose();
+    }
   }
 
-  // Erstellt eine unsichtbare, aber raycastbare Zielkugel für ein Target
+  // erstellt ein unsichtbares Ziel-Mesh basierend auf den Konfigurationsdaten
   _makeTargetMesh(t, organId, targetId) {
-    const geo = new THREE.SphereGeometry(t.radius, 16, 16);
-    const mat = new THREE.MeshBasicMaterial({
+    const sphere = new THREE.SphereGeometry(t.radius, 16, 16);
+    const material = new THREE.MeshBasicMaterial({
       transparent: true,
-      opacity: 0.0, 
+      opacity: 0.0,
     });
 
-    const mesh = new THREE.Mesh(geo, mat);
+    const mesh = new THREE.Mesh(sphere, material);
     mesh.position.set(...t.position);
     mesh.scale.set(...(t.scale ?? [1, 1, 1]));
     mesh.userData.organId = organId;

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 // Verwaltet die Perspektivkamer mit einem Blick von vorne auf die Szene, leicht erhöht
+
 export class CameraManager {
   constructor() {
     this.camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100); // PerspectiveCamera( fov, aspect, near, far )

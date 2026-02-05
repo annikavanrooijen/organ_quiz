@@ -29,12 +29,15 @@ export class RendererManager {
   }
 
   // Setzt die Animationsschleife mit einem Callback, das die Delta-Zeit erhält
-  setAnimationLoop(fn) {
+    setAnimationLoop(fn) {
     let last = performance.now();
-    this.renderer.setAnimationLoop(() => {
+    const self = this;
+
+    this.renderer.setAnimationLoop(function () {
       const now = performance.now();
       const dt = (now - last) / 1000;
       last = now;
+
       fn(dt);
     });
   }

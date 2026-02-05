@@ -5,7 +5,7 @@ import * as THREE from "three";
 export class SceneManager {
   constructor() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0b1020); 
+    this.scene.background = new THREE.Color(0x1b2a4a); 
 
     const amb = new THREE.AmbientLight(0xffffff, 0.35); 
     const dir = new THREE.DirectionalLight(0xffffff, 1.0); 
