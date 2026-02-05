@@ -7,6 +7,8 @@ Das Organ Quiz ist eine prototypische, interaktive Webanwendung auf Basis von Th
 
 Die Anwendung kombiniert eine 3D-Visualisierung mithilfe von glTF-Modellen, eine integrierte Quiz-Logik sowie eine interaktive Benutzeroberfläche. Durch die klare Trennung von Darstellung, Logik und Benutzerinteraktion folgt das Projekt einer modularen JavaScript-Architektur. Aufgrund dieses modularen Aufbaus ist die Anwendung leicht erweiterbar und skalierbar. Weitere Organe und zusätzliche Fragen können ohne grundlegende Änderungen an der bestehenden Struktur integriert werden; hierfür müssen lediglich die entsprechenden Einträge in der OrganConfig sowie im Questions-Modul ergänzt werden.
 
+Dieses Projekt entstand im Rahmen des Moduls B41 Computergrafik unter der Leitung von Prof. Dr.-Ing. Thomas Jung an der HTW Berlin im Wintersemester 2025/26.
+
 
 ## Verwendete Technologien
 
