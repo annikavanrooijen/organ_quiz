@@ -125,7 +125,7 @@ licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 ## Externe Quellen & Inspiration
 
 **KI-Unterstützung:**  
-ChatGPT (OpenAI) wurde im Rahmen des Projekts als unterstützendes Hilfsmittel zur technischen Recherche, zur Überprüfung von Lösungsansätzen sowie zur sprachlichen Präzisierung der Dokumentation eingesetzt.
+ChatGPT (OpenAI) wurde im Rahmen des Projekts als unterstützendes Hilfsmittel zur technischen Recherche, zur Überprüfung von Lösungsansätzen sowie zur sprachlichen Präzisierung der Dokumentation eingesetzt. Ebenso wurden die Infotexte für die Organe KI generiert. 
 
 ### YouTube Tutorials
 - **Three.js Raycasting Tutorial for Beginners – Mouse Picking & Selection**  
